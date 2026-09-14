@@ -1,0 +1,893 @@
+/* ==========================================================================
+   الملاذ الآمن | ALMALATH ALAMEN — الورقة الرئيسية للتصميم (Design System)
+   ==========================================================================
+   هذا الملف هو المصدر الوحيد لكل الألوان والخطوط والمسافات المستخدمة في
+   الموقع. لو عايز تغيّر لون أساسي أو خط، غيّره هنا مرة واحدة بس وهينعكس
+   على كل صفحات الموقع تلقائيًا. الأقسام مقسّمة بعناوين واضحة تحت كل
+   واحدة عشان تلاقي اللي محتاجه بسرعة.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1) الخطوط (Google Fonts) — Tajawal للعربي / Poppins للإنجليزي
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* --------------------------------------------------------------------------
+   2) متغيرات التصميم (Design Tokens) — الألوان مأخوذة من دليل الهوية
+   -------------------------------------------------------------------------- */
+:root {
+  /* الألوان الأساسية (الأزرق بدرجاته من دليل الهوية) */
+  --c-navy: #0B3B57;      /* أزرق كحلي غامق */
+  --c-blue: #146C94;      /* أزرق متوسط */
+  --c-sky: #2FA4D6;       /* أزرق سماوي — اللون المحوري للموقع */
+  --c-sky-light: #8ED4EE; /* أزرق فاتح متدرج */
+
+  /* الألوان الفرعية */
+  --c-orange: #F3873E;      /* برتقالي الشعار */
+  --c-orange-dark: #E2551F; /* برتقالي غامق / أحمر متدرج */
+  --c-green: #1F5C46;       /* أخضر غامق (اسم العلامة) */
+  --c-green-light: #7CB342; /* أخضر فاتح */
+
+  /* تدرج الشعار */
+  --gradient-brand: linear-gradient(135deg, var(--c-orange) 0%, var(--c-orange-dark) 35%, var(--c-sky) 70%, var(--c-navy) 100%);
+  --gradient-sea: linear-gradient(180deg, var(--c-navy) 0%, var(--c-blue) 45%, var(--c-sky) 100%);
+  --gradient-sunset: linear-gradient(135deg, #0B3B57 0%, #146C94 40%, #2FA4D6 70%, #F3873E 100%);
+
+  /* الوضع الفاتح (افتراضي) */
+  --bg: #FFFFFF;
+  --surface: #F4FAFD;
+  --surface-2: #EAF4F9;
+  --text: #10273A;
+  --text-muted: #56707F;
+  --border: #E1ECF1;
+  --header-bg: rgba(255, 255, 255, 0.9);
+  --card-shadow: 0 10px 30px rgba(11, 59, 87, 0.08);
+  --overlay-dark: rgba(6, 24, 36, 0.55);
+
+  /* خطوط */
+  --font-ar: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+  --font-en: 'Poppins', 'Segoe UI', Arial, sans-serif;
+
+  /* مسافات ومقاسات */
+  --container: 1240px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
+  --radius-full: 999px;
+  --header-top-h: 96px;   /* ارتفاع صف اللوجو والمعلومات */
+  --header-bar-h: 60px;   /* ارتفاع شريط التابات الملوّن */
+  --bar-overlap: 26px;    /* مقدار ركوب شريط التابات على صورة الهيرو */
+  --transition: 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+/* الوضع الغامق */
+[data-theme="dark"] {
+  --bg: #071722;
+  --surface: #0E2431;
+  --surface-2: #123044;
+  --text: #EAF4FA;
+  --text-muted: #9DC0D3;
+  --border: #1B3B4E;
+  --header-bg: rgba(7, 23, 34, 0.85);
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --overlay-dark: rgba(3, 14, 22, 0.68);
+}
+
+/* --------------------------------------------------------------------------
+   3) إعادة ضبط أساسية (Reset)
+   -------------------------------------------------------------------------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html[dir="rtl"] body { font-family: var(--font-ar); }
+html[dir="ltr"] body { font-family: var(--font-en); }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  /* clip بدل hidden عشان ميكسرش ثبات الهيدر (sticky) في المتصفحات الحديثة */
+  overflow-x: hidden;
+  overflow-x: clip;
+  transition: background var(--transition), color var(--transition);
+}
+
+img, video { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, textarea, select { font-family: inherit; }
+
+::selection { background: var(--c-sky); color: #fff; }
+
+h1, h2, h3, h4 { line-height: 1.3; font-weight: 800; }
+html[dir="ltr"] h1, html[dir="ltr"] h2, html[dir="ltr"] h3, html[dir="ltr"] h4 { font-weight: 700; }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--c-sky); border-radius: 10px; }
+
+/* --------------------------------------------------------------------------
+   4) أدوات عامة (Utilities)
+   -------------------------------------------------------------------------- */
+.container { max-width: var(--container); margin-inline: auto; padding-inline: 24px; }
+.section { padding-block: 96px; position: relative; }
+.section-sm { padding-block: 56px; }
+.bg-surface { background: var(--surface); }
+.bg-navy { background: var(--c-navy); color: #fff; }
+.text-center { text-align: center; }
+.grid { display: grid; gap: 28px; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.flex { display: flex; align-items: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.gap-sm { gap: 12px; }
+.gap-md { gap: 20px; }
+.hidden { display: none !important; }
+.relative { position: relative; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--c-sky); font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  background: color-mix(in srgb, var(--c-sky) 12%, transparent);
+  padding: 8px 18px; border-radius: var(--radius-full);
+  margin-bottom: 16px;
+}
+.eyebrow::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--c-orange); }
+
+.section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); margin-bottom: 16px; color: var(--text); }
+.section-title span { color: var(--c-sky); }
+.section-lead { color: var(--text-muted); font-size: 1.05rem; max-width: 680px; }
+.section-head { margin-bottom: 48px; }
+.section-head.text-center .section-lead { margin-inline: auto; }
+
+/* أزرار — بدون أي حدود/Stroke حواليها، كلها بألوان مصمتة أو تدرجات */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 15px 32px; border-radius: var(--radius-full);
+  font-weight: 700; font-size: 0.98rem; transition: all var(--transition);
+  white-space: nowrap; border: none;
+}
+.btn-primary { background: var(--gradient-sea); color: #fff; box-shadow: 0 12px 28px rgba(20, 108, 148, 0.35); }
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(20, 108, 148, 0.45); }
+.btn-accent { background: var(--gradient-brand); color: #fff; box-shadow: 0 12px 28px rgba(226, 85, 31, 0.3); }
+.btn-accent:hover { transform: translateY(-3px); }
+.btn-outline { background: var(--surface-2); color: var(--text); }
+.btn-outline:hover { background: var(--gradient-sea); color: #fff; transform: translateY(-3px); }
+.btn-white { background: #fff; color: var(--c-navy); }
+.btn-white:hover { transform: translateY(-3px); }
+.btn-sm { padding: 10px 22px; font-size: 0.9rem; }
+.btn svg { width: 18px; height: 18px; }
+html[dir="rtl"] .btn svg.icon-arrow { transform: scaleX(-1); }
+
+/* شارات */
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface-2); color: var(--c-blue);
+  padding: 6px 16px; border-radius: var(--radius-full);
+  font-size: 0.82rem; font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   5) الهيدر والتنقل — هيدر من صفّين:
+      الصف الأول (أبيض): اللوجو + معلومات التواصل بأيقونات.
+      الصف الثاني (ملوّن): تابات القائمة + زر عرض السعر.
+      عند النزول بالسكرول: الصف الأول يطلع لفوق ويفضل شريط التابات
+      ثابت في أعلى الشاشة لوحده (نفس فكرة الديمو).
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: calc(-1 * var(--header-top-h));   /* الحيلة اللي بتخلي شريط التابات يثبت لوحده */
+  z-index: 300;
+  /* بدون خلفية هنا عن قصد: عشان الجزء السفلي من الشريط يبان راكب على
+     صورة/فيديو الهيرو بدل ما يبان مقصوص من تحت */
+  margin-bottom: calc(-1 * var(--bar-overlap));
+}
+
+/* ---- الصف الأول: اللوجو + معلومات التواصل ---- */
+.header-top {
+  height: var(--header-top-h);
+  background: var(--bg);
+}
+.header-top .container {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%; gap: 20px;
+}
+
+/* اللوجو صورة PNG من الهوية الرسمية — نسخة للخلفية الفاتحة وأخرى للداكنة */
+.brand { display: flex; align-items: center; flex-shrink: 0; }
+.brand img { height: 52px; width: auto; display: block; }
+.brand .logo-dark { display: none; }
+[data-theme="dark"] .brand .logo-light { display: none; }
+[data-theme="dark"] .brand .logo-dark { display: block; }
+/* الفوتر خلفيته غامقة دايمًا، فبيستخدم النسخة الفاتحة من اللوجو */
+.brand-footer img { height: 58px; }
+
+.header-info { display: flex; align-items: center; }
+.info-stack {
+  display: flex; align-items: center; gap: 12px;
+  padding-inline: 26px; border-inline-end: 1px solid var(--border);
+  transition: opacity var(--transition);
+}
+.info-stack:last-child { border-inline-end: none; padding-inline-end: 0; }
+a.info-stack:hover .info-label { color: var(--c-sky); }
+.info-icon {
+  width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+  background: color-mix(in srgb, var(--c-sky) 13%, transparent);
+  color: var(--c-sky); display: flex; align-items: center; justify-content: center;
+}
+.info-icon svg { width: 21px; height: 21px; }
+.info-text { display: flex; flex-direction: column; line-height: 1.35; }
+.info-label { font-size: 0.95rem; font-weight: 800; color: var(--text); transition: color var(--transition); }
+.info-value { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+
+.header-tools { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; background: var(--surface-2); color: var(--text);
+  transition: all var(--transition); flex-shrink: 0; font-size: 0.8rem; font-weight: 800;
+}
+.icon-btn:hover { background: var(--c-sky); color: #fff; }
+.icon-btn svg { width: 19px; height: 19px; }
+.icon-btn .icon-moon { display: none; }
+[data-theme="dark"] .icon-btn .icon-sun { display: none; }
+[data-theme="dark"] .icon-btn .icon-moon { display: block; }
+
+.nav-toggle {
+  display: none; width: 42px; height: 42px; border-radius: 50%;
+  background: var(--surface-2); flex-direction: column; align-items: center;
+  justify-content: center; gap: 5px;
+}
+.nav-toggle span, .nav-toggle::before, .nav-toggle::after {
+  content: ''; display: block; width: 20px; height: 2px;
+  background: var(--text); border-radius: 2px;
+}
+
+/* ---- الصف الثاني: شريط التابات الملوّن ---- */
+.header-bar {
+  background: var(--c-blue);
+  max-width: var(--container); margin-inline: auto;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 26px rgba(11, 59, 87, 0.18);
+  transition: max-width 0.25s ease, border-radius 0.25s ease, box-shadow 0.25s ease;
+}
+.header-bar .container {
+  display: flex; align-items: center; justify-content: space-between;
+  height: var(--header-bar-h); gap: 16px;
+}
+
+/* لما ننزل بالسكرول: الشريط يبقى بعرض الشاشة كلها وله ظل */
+.site-header.is-stuck .header-bar {
+  max-width: 100%; border-radius: 0;
+  box-shadow: 0 8px 26px rgba(11, 59, 87, 0.22);
+}
+[data-theme="dark"] .header-bar { background: #0E3A54; }
+
+.main-nav { display: flex; align-items: center; height: 100%; min-width: 0; }
+.main-nav a {
+  display: flex; align-items: center; height: 100%;
+  padding-inline: 17px; color: #fff; font-weight: 700; font-size: 0.92rem;
+  white-space: nowrap; position: relative; transition: background var(--transition);
+}
+.main-nav a::after {
+  content: ''; position: absolute; inset-inline-end: 0; top: 28%; height: 44%;
+  width: 1px; background: rgba(255, 255, 255, 0.2);
+}
+.main-nav a:last-child::after { display: none; }
+.main-nav a:hover, .main-nav a.active { background: rgba(255, 255, 255, 0.16); }
+
+.btn-quote {
+  background: var(--c-navy); color: #fff; font-weight: 800; font-size: 0.88rem;
+  padding: 12px 26px; border-radius: var(--radius-full); white-space: nowrap;
+  transition: all var(--transition); flex-shrink: 0;
+}
+.btn-quote:hover { background: var(--c-orange); transform: translateY(-2px); }
+
+/* --------------------------------------------------------------------------
+   6) الهيرو (Hero)
+   -------------------------------------------------------------------------- */
+.hero {
+  position: relative; min-height: 92vh; display: flex; align-items: center;
+  overflow: hidden; color: #fff;
+}
+.hero-media { position: absolute; inset: 0; z-index: 0; }
+.hero-media video, .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+.hero-media::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(6,24,36,.65) 0%, rgba(6,24,36,.45) 45%, rgba(6,24,36,.85) 100%);
+}
+.hero-content { position: relative; z-index: 2; max-width: 760px; padding-block: 80px; }
+.hero-content .eyebrow { background: rgba(255,255,255,0.15); color: #fff; }
+.hero-content .eyebrow::before { background: var(--c-orange); }
+.hero-title { font-size: clamp(2.3rem, 5vw, 4rem); margin-bottom: 20px; text-shadow: 0 4px 24px rgba(0,0,0,0.3); }
+.hero-title .accent { color: var(--c-sky-light); }
+.hero-text { font-size: 1.15rem; color: rgba(255,255,255,0.9); max-width: 560px; margin-bottom: 34px; }
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+.wave-divider { position: absolute; bottom: -1px; left: 0; width: 100%; line-height: 0; z-index: 1; }
+.wave-divider svg { width: 100%; height: 90px; display: block; }
+.wave-divider path { fill: var(--bg); }
+
+/* شريط الإحصائيات — كروت */
+.stats-bar { position: relative; z-index: 3; }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px;
+}
+.stat-card {
+  text-align: center; padding: 30px 16px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow); transition: all var(--transition);
+}
+.stat-card:hover { transform: translateY(-6px); border-color: var(--c-sky); }
+.stat-num {
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem); font-weight: 900; color: var(--c-sky);
+  display: flex; align-items: baseline; justify-content: center; gap: 3px;
+}
+.stat-label { color: var(--text-muted); font-size: 0.88rem; margin-top: 8px; font-weight: 600; }
+@media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* شبكة نقاط القيمة التجارية (Why Supply With Us) */
+.value-prop-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.value-prop-card {
+  padding: 26px 22px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-md); box-shadow: var(--card-shadow); transition: all var(--transition);
+}
+.value-prop-card:hover { transform: translateY(-6px); border-color: var(--c-sky); }
+.value-prop-card .icon-circle { width: 46px; height: 46px; margin-bottom: 14px; }
+.value-prop-card .icon-circle svg { width: 20px; height: 20px; }
+.value-prop-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.value-prop-card p { color: var(--text-muted); font-size: 0.88rem; }
+@media (max-width: 900px) { .value-prop-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .value-prop-grid { grid-template-columns: 1fr; } }
+
+/* --------------------------------------------------------------------------
+   7) الكروت (Cards)
+   -------------------------------------------------------------------------- */
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
+  overflow: hidden; transition: all var(--transition); box-shadow: var(--card-shadow);
+}
+.card:hover { transform: translateY(-8px); }
+.card-media { position: relative; aspect-ratio: 4/3; overflow: hidden; }
+.card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.card:hover .card-media img { transform: scale(1.08); }
+.card-body { padding: 26px; }
+.card-body h3 { font-size: 1.2rem; margin-bottom: 10px; }
+.card-body p { color: var(--text-muted); font-size: 0.95rem; }
+.card-tag {
+  position: absolute; top: 16px; inset-inline-start: 16px; z-index: 2;
+  background: var(--gradient-brand); color: #fff; padding: 6px 16px;
+  border-radius: var(--radius-full); font-size: 0.78rem; font-weight: 800;
+}
+.card-link { display: inline-flex; align-items: center; gap: 8px; color: var(--c-sky); font-weight: 700; margin-top: 14px; font-size: 0.92rem; white-space: nowrap; }
+
+/* أيقونات دائرية */
+.icon-circle {
+  width: 62px; height: 62px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--gradient-sea); color: #fff; flex-shrink: 0;
+}
+.icon-circle svg { width: 28px; height: 28px; }
+.icon-circle.alt { background: var(--gradient-brand); }
+
+.feature-card { text-align: center; padding: 40px 26px; background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); transition: all var(--transition); }
+.feature-card:hover { border-color: var(--c-sky); transform: translateY(-6px); }
+.feature-card .icon-circle { margin-inline: auto; margin-bottom: 22px; }
+.feature-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+.feature-card p { color: var(--text-muted); font-size: 0.92rem; }
+
+/* --------------------------------------------------------------------------
+   8) الخط الزمني / رحلة المزرعة للمائدة (Journey / Timeline)
+   -------------------------------------------------------------------------- */
+/* المسافة الكبيرة في النص (gap) بتسيب مساحة كافية لدوائر الخط الزمني
+   من غير ما تغطي على النص أو الصورة */
+.journey-step {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 150px; align-items: center;
+  padding-block: 70px; position: relative;
+}
+.journey-step:not(:last-child) { border-bottom: 1px dashed var(--border); }
+.journey-step .step-num {
+  font-size: 4.6rem; font-weight: 900; color: transparent;
+  -webkit-text-stroke: 2px var(--c-sky); opacity: 0.5; line-height: 1; margin-bottom: 10px;
+}
+.journey-step .step-media { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--card-shadow); aspect-ratio: 5/4; }
+.journey-step .step-media img { width: 100%; height: 100%; object-fit: cover; }
+.journey-step:nth-child(even) .step-content { order: 2; }
+.journey-step:nth-child(even) .step-media { order: 1; }
+.step-icon-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.step-icon-list span { background: var(--surface-2); color: var(--c-blue); padding: 7px 14px; border-radius: var(--radius-full); font-size: 0.82rem; font-weight: 700; }
+
+.timeline-nav { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.timeline-nav a { padding: 9px 18px; border-radius: var(--radius-full); background: var(--surface-2); font-size: 0.85rem; font-weight: 700; color: var(--text-muted); transition: all var(--transition); }
+.timeline-nav a:hover { background: var(--c-sky); color: #fff; }
+
+/* --------------------------------------------------------------------------
+   9) نموذج التواصل والفورم
+   -------------------------------------------------------------------------- */
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 0.92rem; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 14px 18px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text); font-size: 0.95rem; transition: border var(--transition);
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--c-sky); }
+.form-group textarea { min-height: 140px; resize: vertical; }
+.form-error { color: var(--c-orange-dark); font-size: 0.8rem; margin-top: 6px; display: none; }
+.form-group.invalid input, .form-group.invalid textarea, .form-group.invalid select { border-color: var(--c-orange-dark); }
+.form-group.invalid .form-error { display: block; }
+.form-success {
+  display: none; align-items: center; gap: 12px; background: color-mix(in srgb, var(--c-green-light) 15%, transparent);
+  color: var(--c-green); padding: 18px 22px; border-radius: var(--radius-sm); font-weight: 700; margin-top: 18px;
+}
+.form-success.show { display: flex; }
+
+/* --------------------------------------------------------------------------
+   10) الفوتر
+   -------------------------------------------------------------------------- */
+.site-footer { background: var(--c-navy); color: rgba(255,255,255,0.85); position: relative; overflow: hidden; }
+.footer-top { padding-block: 70px; position: relative; z-index: 2; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.3fr; gap: 40px; }
+.footer-col h4 { color: #fff; font-size: 1rem; margin-bottom: 20px; }
+.footer-col ul li { margin-bottom: 12px; }
+.footer-col ul a { color: rgba(255,255,255,0.75); font-size: 0.92rem; transition: color var(--transition); }
+.footer-col ul a:hover { color: var(--c-sky-light); }
+.footer-brand p { color: rgba(255,255,255,0.7); font-size: 0.92rem; margin-block: 18px; max-width: 320px; }
+.footer-social { display: flex; gap: 10px; }
+.footer-social a { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: background var(--transition); }
+.footer-social a:hover { background: var(--c-sky); }
+.footer-social svg { width: 17px; height: 17px; }
+.footer-contact li { display: flex; align-items: flex-start; gap: 10px; color: rgba(255,255,255,0.75); font-size: 0.92rem; }
+.footer-contact svg { width: 16px; height: 16px; margin-top: 3px; flex-shrink: 0; color: var(--c-sky-light); }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.12); padding-block: 22px; position: relative; z-index: 2; }
+.footer-bottom .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+.footer-waves { position: absolute; bottom: 0; left: 0; width: 100%; opacity: 0.08; z-index: 1; }
+
+/* --------------------------------------------------------------------------
+   11) أزرار عائمة (واتساب + الرجوع لأعلى)
+   -------------------------------------------------------------------------- */
+.floating-actions { position: fixed; bottom: 26px; inset-inline-end: 26px; z-index: 300; display: flex; flex-direction: column; gap: 12px; }
+.fab { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 26px rgba(0,0,0,0.25); transition: transform var(--transition); }
+.fab:hover { transform: scale(1.08); }
+.fab-whatsapp { background: #25D366; color: #fff; }
+.fab-whatsapp svg { width: 28px; height: 28px; }
+.fab-top { background: var(--c-navy); color: #fff; opacity: 0; pointer-events: none; transform: translateY(10px); }
+.fab-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.fab-top svg { width: 20px; height: 20px; }
+
+/* --------------------------------------------------------------------------
+   12) عناصر بصرية جذابة — فقاعات وأمواج متحركة
+   -------------------------------------------------------------------------- */
+.bubbles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+.bubble { position: absolute; bottom: -60px; border-radius: 50%; background: rgba(255,255,255,0.18); animation: rise linear infinite; }
+@keyframes rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateY(-110vh) scale(1.4); opacity: 0; }
+}
+
+.pattern-waves {
+  position: absolute; inset: 0; z-index: 0; opacity: 0.06; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60'%3E%3Cpath d='M0 30 Q 15 10 30 30 T 60 30 T 90 30 T 120 30' stroke='%232FA4D6' stroke-width='3' fill='none'/%3E%3C/svg%3E");
+  background-size: 120px 60px;
+}
+
+/* شارة "إنتاج سعودي 100%" */
+.stamp {
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 128px; height: 128px; border-radius: 50%; border: 2px dashed var(--c-sky);
+  text-align: center; padding: 10px; gap: 4px; flex-shrink: 0;
+}
+.stamp strong { font-size: 1.5rem; color: var(--c-sky); font-weight: 900; }
+.stamp span { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; line-height: 1.3; }
+
+/* --------------------------------------------------------------------------
+   13) عناصر خاصة بالصفحات الداخلية (Page Hero بسيط)
+   -------------------------------------------------------------------------- */
+.page-hero {
+  position: relative; padding-block: 150px 90px; color: #fff; overflow: hidden;
+  background: var(--gradient-sea);
+}
+.page-hero img.bg-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
+.page-hero .container { position: relative; z-index: 2; }
+.breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: rgba(255,255,255,0.75); margin-bottom: 18px; }
+.breadcrumb a:hover { color: #fff; }
+.page-hero h1 { font-size: clamp(2rem, 4vw, 3rem); }
+.page-hero p { color: rgba(255,255,255,0.85); max-width: 600px; margin-top: 14px; }
+
+/* الجداول الزمنية (من نحن) */
+.timeline { position: relative; padding-inline-start: 32px; border-inline-start: 2px solid var(--border); }
+.timeline-item { position: relative; padding-bottom: 42px; }
+.timeline-item::before { content: ''; position: absolute; inset-inline-start: -39px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--c-sky); border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--c-sky); }
+.timeline-item h4 { color: var(--c-sky); margin-bottom: 6px; }
+.timeline-item p { color: var(--text-muted); }
+
+/* القيم */
+.value-item { display: flex; gap: 18px; padding: 26px; background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--border); }
+.value-item h3 { margin-bottom: 8px; font-size: 1.05rem; }
+.value-item p { color: var(--text-muted); font-size: 0.92rem; }
+
+/* منتجات - فلاتر */
+.filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+.filter-btn { padding: 10px 22px; border-radius: var(--radius-full); background: var(--surface-2); font-weight: 700; font-size: 0.9rem; transition: all var(--transition); }
+.filter-btn.active, .filter-btn:hover { background: var(--gradient-sea); color: #fff; }
+.product-item { display: none; }
+.product-item.show { display: block; }
+
+.product-specs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.product-specs span { font-size: 0.78rem; background: var(--surface-2); color: var(--c-blue); padding: 5px 12px; border-radius: var(--radius-full); font-weight: 700; }
+
+/* وصفات - أكورديون */
+.recipe-card { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; background: var(--surface); margin-bottom: 22px; }
+.recipe-head { display: grid; grid-template-columns: 220px 1fr auto; gap: 24px; align-items: center; padding: 18px; cursor: pointer; }
+.recipe-head img { width: 100%; height: 140px; object-fit: cover; border-radius: var(--radius-sm); }
+.recipe-head h3 { font-size: 1.15rem; margin-bottom: 8px; }
+.recipe-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.82rem; color: var(--text-muted); }
+.recipe-meta span { display: flex; align-items: center; gap: 6px; }
+.recipe-meta svg { width: 15px; height: 15px; color: var(--c-sky); }
+.recipe-toggle { width: 44px; height: 44px; border-radius: 50%; background: var(--surface-2); display: flex; align-items: center; justify-content: center; transition: transform var(--transition); flex-shrink: 0; }
+.recipe-card.open .recipe-toggle { transform: rotate(45deg); background: var(--c-sky); color: #fff; }
+.recipe-body { max-height: 0; overflow: hidden; transition: max-height 0.45s ease; }
+.recipe-card.open .recipe-body { max-height: 2200px; }
+.recipe-body-inner { padding: 0 24px 30px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 34px; }
+.recipe-body-inner h4 { margin-bottom: 12px; color: var(--c-sky); }
+.recipe-body-inner ul { margin-bottom: 18px; }
+.recipe-body-inner ul li { padding-inline-start: 22px; position: relative; margin-bottom: 8px; color: var(--text-muted); }
+.recipe-body-inner ul li::before { content: '●'; position: absolute; inset-inline-start: 0; color: var(--c-orange); font-size: 0.6rem; top: 8px; }
+.recipe-body-inner ol { padding-inline-start: 20px; color: var(--text-muted); }
+.recipe-body-inner ol li { margin-bottom: 10px; }
+
+/* نصيحة الطهي أسفل خطوات كل وصفة */
+.recipe-tip {
+  display: flex; gap: 12px; align-items: flex-start; margin-top: 20px;
+  padding: 16px 18px; border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--c-sky) 10%, transparent);
+}
+.recipe-tip svg { width: 22px; height: 22px; color: var(--c-sky); flex-shrink: 0; margin-top: 2px; }
+.recipe-tip p { font-size: 0.88rem; color: var(--text-muted); margin: 0; }
+
+/* شريط القيم الغذائية أعلى صفحة الوصفات — كروت متحركة */
+.nutrition-heading {
+  text-align: center; font-size: clamp(1.15rem, 2.2vw, 1.5rem); font-weight: 800;
+  color: var(--text); margin-bottom: 22px;
+}
+.nutrition-bar {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 14px;
+}
+.nutrition-item {
+  text-align: center; padding: 30px 14px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius-md);
+  box-shadow: var(--card-shadow); transition: all var(--transition);
+}
+.nutrition-item:hover { transform: translateY(-6px); border-color: var(--c-sky); }
+.nutrition-item strong { display: flex; align-items: baseline; justify-content: center; font-size: 4rem; font-weight: 900; color: var(--c-sky); line-height: 1.2; direction: ltr; }
+.nutrition-item .nutrition-label { display: flex; align-items: baseline; justify-content: center; gap: 5px; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; margin-top: 10px; }
+.nutrition-item .nutrition-label small { font-size: inherit; font-weight: 700; }
+.nutrition-note {
+  text-align: center; font-size: 0.74rem;
+  color: var(--text-muted); margin-top: 6px; margin-bottom: 40px;
+}
+@media (max-width: 560px) {
+  .nutrition-bar { grid-template-columns: repeat(2, 1fr); }
+  .nutrition-item strong { font-size: 2.8rem; }
+}
+
+/* الشركاء */
+.partner-card { text-align: center; padding: 40px 26px; }
+.partner-logo { width: 90px; height: 90px; border-radius: 50%; background: var(--surface-2); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: 900; font-size: 1.6rem; color: var(--c-sky); overflow: hidden; }
+.partner-logo img { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+.partner-logo svg { width: 38px; height: 38px; color: var(--c-sky); }
+.partner-logo-text { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; font-size: 0.78rem; font-weight: 800; color: var(--c-sky); line-height: 1.3; padding: 4px; text-align: center; }
+.partner-card h3 { margin-bottom: 6px; }
+.partner-card .region { color: var(--c-orange-dark); font-weight: 700; font-size: 0.85rem; margin-bottom: 14px; }
+
+.partner-hero-badge {
+  width: 86px; height: 86px; border-radius: var(--radius-md); background: #fff;
+  display: flex; align-items: center; justify-content: center; padding: 14px;
+  margin-bottom: 20px; box-shadow: var(--card-shadow); overflow: hidden;
+}
+.partner-hero-badge img { width: 100%; height: 100%; object-fit: contain; }
+.partner-hero-badge svg { width: 38px; height: 38px; color: var(--c-sky); }
+.partner-hero-badge .partner-logo-text { font-size: 0.85rem; }
+
+.partner-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+.partner-info-list { margin-top: 26px; }
+.partner-info-list li { display: flex; gap: 14px; padding-block: 14px; border-bottom: 1px solid var(--border); }
+.partner-info-list li:last-child { border-bottom: none; }
+.partner-info-list strong { display: block; margin-bottom: 3px; }
+.partner-info-list span { color: var(--text-muted); font-size: 0.92rem; }
+.map-frame { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--card-shadow); }
+.map-frame iframe { width: 100%; height: 420px; border: 0; display: block; filter: grayscale(0.15); }
+[data-theme="dark"] .map-frame iframe { filter: grayscale(0.3) invert(0.92) hue-rotate(180deg) brightness(0.95) contrast(0.9); }
+
+/* الجودة - شهادات */
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+.cert-item { text-align: center; padding: 34px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); }
+.cert-item .icon-circle { margin-inline: auto 20px; margin-bottom: 18px; }
+
+/* أنيميشن الظهور عند السكرول */
+.reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.in-view { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* CTA بانر */
+.cta-banner {
+  position: relative; overflow: hidden; border-radius: var(--radius-lg);
+  background: var(--gradient-sea); color: #fff; padding: 64px 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap;
+}
+.cta-banner h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); margin-bottom: 10px; }
+.cta-banner p { color: rgba(255,255,255,0.85); max-width: 480px; }
+
+/* اقتباس/ثقة مؤسسية */
+.quote-block { text-align: center; max-width: 780px; margin-inline: auto; }
+.quote-block svg { width: 44px; height: 44px; color: var(--c-sky); margin-inline: auto 18px; opacity: 0.5; }
+.quote-block p { font-size: 1.4rem; font-weight: 700; color: var(--text); line-height: 1.6; }
+.quote-block cite { display: block; margin-top: 20px; color: var(--text-muted); font-style: normal; font-size: 0.92rem; }
+
+/* --------------------------------------------------------------------------
+   14) استجابة الشاشات (Responsive)
+   -------------------------------------------------------------------------- */
+/* لابتوب متوسط: نضيّق التابات والمعلومات شوية عشان كله يفضل في سطر واحد */
+@media (max-width: 1280px) {
+  .main-nav a { padding-inline: 12px; font-size: 0.86rem; }
+  .info-stack { padding-inline: 18px; }
+  .info-label { font-size: 0.88rem; }
+  .info-value { font-size: 0.8rem; }
+}
+
+@media (max-width: 1120px) {
+  /* في المقاسات دي مفيش مساحة للتابات، فنشيل الشريط ونستخدم قائمة الموبايل */
+  :root { --header-top-h: 80px; --bar-overlap: 0px; }
+  .site-header { top: 0; }          /* الهيدر كله هو اللي بيثبت فوق */
+  .header-bar { display: none; }
+  .nav-toggle { display: flex; }
+  .header-top { box-shadow: 0 4px 20px rgba(11,59,87,.08); }
+  .brand img { height: 46px; }
+  .info-stack { padding-inline: 14px; }
+  .info-icon { width: 40px; height: 40px; }
+  .info-icon svg { width: 18px; height: 18px; }
+}
+
+@media (max-width: 1080px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 980px) {
+  /* نسيب معلومة واحدة بس (التليفون) عشان الصف ميزحمش */
+  .info-stack.info-email, .info-stack.info-location { display: none; }
+  .info-stack { border-inline-end: none; padding-inline: 0; }
+}
+
+@media (max-width: 900px) {
+  .journey-step, .journey-step:nth-child(even) .step-content, .journey-step:nth-child(even) .step-media {
+    grid-template-columns: 1fr; order: unset;
+  }
+  .journey-step { grid-template-columns: 1fr; gap: 26px; }
+  .partner-detail-grid { grid-template-columns: 1fr; }
+  .recipe-head { grid-template-columns: 1fr; text-align: center; }
+  .recipe-body-inner { grid-template-columns: 1fr; }
+  .cta-banner { flex-direction: column; text-align: center; padding: 44px 26px; }
+}
+
+@media (max-width: 720px) {
+  .header-info { display: none; }           /* موبايل: لوجو + أزرار بس */
+  .header-tools { gap: 8px; }
+  .brand img { height: 42px; }
+  .container { padding-inline: 18px; }
+}
+
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .section { padding-block: 56px; }
+  .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .hero { min-height: 88vh; }
+  .stamp { width: 104px; height: 104px; }
+  .icon-btn { width: 38px; height: 38px; }
+  .nav-toggle { width: 38px; height: 38px; }
+}
+
+@media (max-width: 420px) {
+  :root { --header-top-h: 72px; }
+  .brand img { height: 36px; }
+  .icon-btn { width: 36px; height: 36px; font-size: 0.72rem; }
+  .nav-toggle { width: 36px; height: 36px; }
+  .header-tools { gap: 6px; }
+}
+
+@media (max-width: 360px) {
+  .container { padding-inline: 12px; }
+  .brand img { height: 32px; }
+  .btn { padding: 13px 20px; font-size: 0.88rem; }
+}
+
+/* قائمة الموبايل المنسدلة — بتظهر بتلاشي بسيط عشان تشتغل مع العربي
+   والإنجليزي بنفس الشكل من غير أي تعارض في اتجاه الحركة */
+.mobile-nav {
+  position: fixed; inset: 0; z-index: 400; background: var(--bg);
+  opacity: 0; visibility: hidden; transform: scale(1.03);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  overflow-y: auto; padding: 22px;
+}
+.mobile-nav.open { opacity: 1; visibility: visible; transform: scale(1); }
+.mobile-nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 26px; }
+.mobile-nav > a {
+  display: block; padding: 15px 8px; font-size: 1.1rem; font-weight: 700;
+  border-bottom: 1px solid var(--border); color: var(--text);
+}
+.mobile-nav > a:hover, .mobile-nav > a.active { color: var(--c-sky); }
+.mobile-nav > a.btn { border-bottom: none; color: #fff; }
+
+/* --------------------------------------------------------------------------
+   15) الخط الزمني التفاعلي لرحلة السمكة (Interactive Timeline)
+   -------------------------------------------------------------------------- */
+.js-timeline { position: relative; }
+.js-timeline::before {
+  content: ''; position: absolute; top: 0; bottom: 0; inset-inline-start: 50%; width: 4px;
+  background: var(--border); transform: translateX(-50%); border-radius: 4px; z-index: 0;
+}
+html[dir="rtl"] .js-timeline::before { transform: translateX(50%); }
+.timeline-fill {
+  position: absolute; top: 0; inset-inline-start: 50%; width: 4px; height: 0%;
+  background: var(--gradient-sea); transform: translateX(-50%); border-radius: 4px; z-index: 1;
+}
+html[dir="rtl"] .timeline-fill { transform: translateX(50%); }
+
+.journey-step { position: relative; }
+.timeline-node {
+  position: absolute; top: 50%; inset-inline-start: 50%; transform: translate(-50%,-50%);
+  width: 64px; height: 64px; border-radius: 50%; background: var(--bg); border: 3px solid var(--border);
+  display: flex; align-items: center; justify-content: center; z-index: 2; flex-shrink: 0;
+  color: var(--c-sky); transition: all 0.5s ease;
+}
+html[dir="rtl"] .timeline-node { transform: translate(50%,-50%); }
+.timeline-node svg { width: 26px; height: 26px; }
+.journey-step.timeline-active .timeline-node {
+  border-color: var(--c-sky); background: var(--gradient-sea); color: #fff;
+  box-shadow: 0 0 0 9px color-mix(in srgb, var(--c-sky) 14%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .journey-step { gap: 110px; }
+}
+
+@media (max-width: 900px) {
+  .js-timeline::before, .timeline-fill { inset-inline-start: 27px; }
+  .timeline-node { top: 6px; inset-inline-start: 27px; width: 54px; height: 54px; }
+  .timeline-node svg { width: 22px; height: 22px; }
+  .journey-step { padding-inline-start: 76px; gap: 26px; }
+  .journey-step .step-content, .journey-step .step-media { order: unset !important; }
+  .journey-step .step-num { font-size: 3.4rem; }
+}
+
+/* --------------------------------------------------------------------------
+   16) جاليري صور المزرعة (Farm Gallery)
+   -------------------------------------------------------------------------- */
+/* كروت الألبومات — نفس ستايل كروت المنتجات والوصفات، كلها في نفس المستوى */
+.gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; align-items: start; }
+.gallery-item { display: none; cursor: pointer; }
+.gallery-item.show { display: block; }
+
+.gallery-item .card-media { aspect-ratio: 4/3; position: relative; }
+.gallery-item .album-count {
+  position: absolute; top: 14px; inset-inline-start: 14px; z-index: 2;
+  background: rgba(6,24,36,.62); backdrop-filter: blur(6px); color: #fff;
+  padding: 6px 14px; border-radius: var(--radius-full);
+  font-size: 0.76rem; font-weight: 700; display: flex; align-items: center; gap: 7px;
+}
+.gallery-item .album-count svg { width: 14px; height: 14px; }
+.gallery-item .card-body h3 { font-size: 1.12rem; margin-bottom: 8px; }
+.gallery-item .card-body p { color: var(--text-muted); font-size: 0.92rem; }
+
+/* شريط فئات الجاليري في النص */
+.gallery-filter { justify-content: center; margin-bottom: 40px; }
+
+/* نافذة الألبوم — بتعرض مجموعة صور مع أسهم للتنقل بينها */
+.gallery-lightbox {
+  position: fixed; inset: 0; z-index: 500; background: rgba(3,14,22,0.94);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 70px 24px 30px; gap: 18px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.gallery-lightbox.open { opacity: 1; pointer-events: auto; }
+.lightbox-stage {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 100%; max-width: 980px; flex: 1; min-height: 0;
+}
+.lightbox-stage img {
+  max-width: 100%; max-height: 100%; border-radius: var(--radius-md); object-fit: contain;
+}
+.lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.16);
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition); z-index: 2;
+}
+.lightbox-nav:hover { background: var(--c-sky); }
+.lightbox-nav svg { width: 22px; height: 22px; }
+.lightbox-prev { left: 10px; }
+.lightbox-next { right: 10px; }
+.lightbox-caption { color: #fff; text-align: center; }
+.lightbox-caption strong { display: block; font-size: 1.05rem; }
+.lightbox-caption span { font-size: 0.85rem; color: rgba(255,255,255,.65); }
+.lightbox-thumbs { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.lightbox-thumbs img {
+  width: 66px; height: 50px; object-fit: cover; border-radius: 8px; cursor: pointer;
+  opacity: 0.5; transition: opacity var(--transition), outline-color var(--transition);
+  outline: 2px solid transparent; outline-offset: 2px;
+}
+.lightbox-thumbs img.active, .lightbox-thumbs img:hover { opacity: 1; outline-color: var(--c-sky); }
+.gallery-lightbox-close {
+  position: absolute; top: 20px; inset-inline-end: 20px; width: 46px; height: 46px; border-radius: 50%;
+  background: rgba(255,255,255,0.14); color: #fff; display: flex; align-items: center; justify-content: center;
+  z-index: 3;
+}
+.gallery-lightbox-close:hover { background: var(--c-orange); }
+.gallery-lightbox-close svg { width: 20px; height: 20px; }
+
+@media (max-width: 900px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; } }
+@media (max-width: 560px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-lightbox { padding: 60px 12px 20px; }
+  .lightbox-nav { width: 40px; height: 40px; }
+  .lightbox-thumbs img { width: 52px; height: 40px; }
+}
+
+/* --------------------------------------------------------------------------
+   17) قسم الفيديو التعريفي (Promo Video)
+   -------------------------------------------------------------------------- */
+.promo-video {
+  position: relative; border-radius: var(--radius-lg); overflow: hidden;
+  aspect-ratio: 16/8; box-shadow: var(--card-shadow); cursor: pointer;
+}
+.promo-video video, .promo-video img { width: 100%; height: 100%; object-fit: cover; }
+.promo-video::before {
+  content: ''; position: absolute; inset: 0; background: rgba(6,24,36,.35); transition: background var(--transition); z-index: 1;
+}
+.promo-video.playing::before { background: rgba(6,24,36,0); pointer-events: none; }
+/* مهم: نستخدم left/translate (مش inset-inline-start) عشان الزر يقع في نص
+   الفيديو بالظبط في العربي والإنجليزي على السواء */
+.promo-play {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 96px; height: 96px; border-radius: 50%; background: rgba(255,255,255,0.95); color: var(--c-navy);
+  display: flex; align-items: center; justify-content: center; z-index: 2;
+  transition: transform var(--transition), opacity var(--transition);
+  box-shadow: 0 14px 34px rgba(0,0,0,.3);
+}
+.promo-video:hover .promo-play { transform: translate(-50%,-50%) scale(1.08); }
+.promo-video.playing .promo-play { opacity: 0; pointer-events: none; }
+/* مثلث التشغيل بيفضل ناحية اليمين في اللغتين (زي أي مشغّل فيديو) */
+.promo-play svg { width: 34px; height: 34px; margin-left: 5px; }
+.promo-video-label {
+  position: absolute; bottom: 22px; inset-inline-start: 26px; z-index: 2; color: #fff;
+  display: flex; align-items: center; gap: 10px; font-weight: 700; transition: opacity var(--transition);
+}
+.promo-video.playing .promo-video-label { opacity: 0; pointer-events: none; }
+.promo-mute {
+  position: absolute; bottom: 22px; inset-inline-end: 26px; z-index: 2; width: 42px; height: 42px;
+  border-radius: 50%; background: rgba(255,255,255,0.18); backdrop-filter: blur(6px); color: #fff;
+  display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity var(--transition);
+}
+.promo-video.playing .promo-mute { opacity: 1; }
+.promo-mute svg { width: 18px; height: 18px; }
+
+@media (max-width: 640px) { .promo-video { aspect-ratio: 4/5; } .promo-play { width: 72px; height: 72px; } .promo-play svg { width: 26px; height: 26px; } }
+
+/* --------------------------------------------------------------------------
+   18) تأثير الغوص لعالم تحت الماء عند السكرول في قسم رحلة السمكة
+   -------------------------------------------------------------------------- */
+.dive-zone { position: relative; overflow: hidden; transition: background 0.2s linear; }
+.dive-overlay {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 0%, rgba(47,164,214,0) 0%, rgba(3,14,22,0) 100%);
+  transition: opacity 0.2s linear; opacity: 0;
+}
+.dive-zone .bubbles { z-index: 0; }
+.dive-zone .container, .dive-zone .js-timeline { position: relative; z-index: 2; }
