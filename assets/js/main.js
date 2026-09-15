@@ -321,6 +321,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ------------------------------------------------------------------
+     12.ب) تابات عامة (Tabs) — تستخدم في صفحة الوصفات وأي مكان تاني فيه تابات
+     الهيكل: عنصر أب عليه [data-tabs]، وجواه أزرار [data-tab-target="اسم"]
+     وعناصر محتوى [data-tab-panel="نفس الاسم"]. لإضافة تاب جديد: زرار جديد
+     بنفس الشكل + عنصر محتوى جديد بنفس القيمة في data-tab-panel.
+     ------------------------------------------------------------------ */
+  document.querySelectorAll('[data-tabs]').forEach(group => {
+    const buttons = group.querySelectorAll('[data-tab-target]');
+    const panels = group.querySelectorAll('[data-tab-panel]');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-tab-target');
+        buttons.forEach(b => b.classList.toggle('active', b === btn));
+        panels.forEach(p => { p.hidden = p.getAttribute('data-tab-panel') !== target; });
+      });
+    });
+  });
+
+  /* ------------------------------------------------------------------
      13) جاليري صور المزرعة — فلترة + عرض مكبّر (Lightbox)
      ------------------------------------------------------------------ */
   const galleryFilterBtns = document.querySelectorAll('.gallery-filter .filter-btn');
@@ -423,6 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     box.addEventListener('click', (e) => {
       if (e.target.closest('.promo-mute')) return;
+      if (box.hasAttribute('data-video-pending')) return; /* الفيديو الحقيقي لسه هيتضاف، مفيش تشغيل دلوقتي */
       if (video.paused) { video.play(); box.classList.add('playing'); }
       else { video.pause(); box.classList.remove('playing'); }
     });
