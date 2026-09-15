@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://almalathalamen.com/sitemap.xml
